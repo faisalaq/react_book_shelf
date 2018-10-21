@@ -9,6 +9,9 @@ const app = express()
 mongoose.promise = global.promise
 mongoose.connect(config.DATABASE)
 
+const { User } = require('./models/user')
+const { Book } = require('./models/book')
+
 app.use(bodyParser.json())
 app.use(cookieParser())
 
