@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
+const config = require('../config/config').get(process.env.NODE_ENV)
 
 const bookSchema = mongoose.Schema({
     name:{
@@ -28,10 +30,17 @@ const bookSchema = mongoose.Schema({
         default:'n/a'
     },
     ownerId:{
-        type:String,
-        required:true
+        type:String
+        // required:true
     }
 }, {timestamps:true})
+
+bookSchema.pre('save', function(next){
+    var book = this
+    var ownerId = jwt.sign(book._id.toHexString(), config.SECRET)
+    book.ownerId = ownerId
+    next()
+})
 
 const Book = mongoose.model('Book', bookSchema)
 

@@ -41,6 +41,24 @@ app.get('/api/books', (req,res)=>{
     })
 })
 
+app.get('/api/getReviewer', (req,res)=>{
+    let id = req.body.id
+    User.findById(id, (err, doc)=>{
+        if(err)  res.status(400).send(err)
+        res.json({
+            name: doc.name,
+            lastname:doc.lastname
+        })
+    })
+})
+
+app.get('/api/users', (req,res)=>{
+    User.find({}, (err, users)=>{
+        if(err) return res.status(400).send(err)
+        res.status(200).send(users)
+    })
+})
+
 // POST //
 app.post('/api/book', (req,res)=>{
 
