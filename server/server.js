@@ -30,9 +30,10 @@ app.get('/api/books', (req,res)=>{
     let limit = parseInt(req.query.limit)
     let order = req.query.order
 
+
     Book.find()
     .skip(skip)
-    .sort({_id:order})
+    .sort({rating:order})
     .limit(limit)
     .exec((err,doc)=>{
         if(err) return res.status(400).send(err)
@@ -53,10 +54,26 @@ app.post('/api/book', (req,res)=>{
     })
 })
 // UPDATE //
-
+app.post('/api/book_update', (req,res)=>{
+    
+    Book.findByIdAndUpdate(req.body._id, req.body, {new:true}, (err, doc)=>{
+        if(err) return res.status(400).send(err)
+        res.json({
+            success:true,
+            doc
+        })
+    })
+})
 
 // DELETE //
+app.delete('/api/delete_book', (req,res)=>{
+    const id = req.query.id
+    Book.findByIdAndRemove(id, (err,doc)=>{
+        if(err) return res.status(400).send(err)
+        res.json(true)
 
+    })
+})
 
 const port = process.env.PORT || 3001
 
