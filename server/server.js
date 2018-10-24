@@ -18,6 +18,16 @@ app.use(cookieParser())
 
 // GET //
 
+app.get('/api/auth', auth,(req,res)=>{
+    res.json({
+        isAuth:true, 
+        id:req.user._id,
+        email:req.user.email,
+        name:req.user.name, 
+        lastname:req.user.lastname
+    })
+})
+
 app.get('/api/logout',auth,(req,res)=>{
     // res.send(req.user)
     req.user.deleteToken(req.token, (err, user)=>{
